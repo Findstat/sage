@@ -80,4 +80,12 @@ Libraries of algorithms
    sage/graphs/graph_list
    sage/graphs/hyperbolicity
 
+Utilities
+---------
+
+.. toctree::
+   :maxdepth: 1
+
+   sage/graphs/dot2tex_utils
+
 .. include:: ../footer.txt
