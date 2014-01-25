@@ -5,8 +5,9 @@ AUTHORS:
 
 - Mike Hansen (2007): Initial version
 - Pierre Cange, Luis Serrano (2012): Added monotone triangles
-- Travis Scrimshaw (2013-28-03): Added element class for ASM's and made :class:`MonotoneTriangles` inherit from :class:`GelfandTsetlinPatterns`.
-- Jessica Striker (2013): Added additional methods.
+- Travis Scrimshaw (2013-28-03): Added element class for ASM's and made
+  :class:`MonotoneTriangles` inherit from :class:`GelfandTsetlinPatterns`
+- Jessica Striker (2013): Added additional methods
 """
 #*****************************************************************************
 #       Copyright (C) 2007 Mike Hansen <mhansen@gmail.com>,
@@ -136,6 +137,70 @@ class AlternatingSignMatrix(Element):
         """
         return not self.__eq__(other)
 
+    def __le__(self, other):
+        """
+        Check less than or equal to. This is needed, see :trac:`15372`.
+
+        EXAMPLES::
+
+            sage: A = AlternatingSignMatrices(3)
+            sage: M = A([[1, 0, 0],[0, 1, 0],[0, 0, 1]])
+            sage: M <= A([[1, 0, 0],[0, 1, 0],[0, 0, 1]])
+            True
+            sage: M <= A([[1, 0, 0],[0, 0, 1],[0, 1, 0]])
+            False
+        """
+        if isinstance(other, AlternatingSignMatrix):
+            return self._matrix <= other._matrix
+        return False #return False if other is not an ASM
+
+    def __lt__(self, other):
+        """
+        Check less than. This is needed, see :trac:`15372`.
+
+        EXAMPLES::
+
+            sage: A = AlternatingSignMatrices(3)
+            sage: M = A([[1, 0, 0],[0, 1, 0],[0, 0, 1]])
+            sage: M < A([[1, 0, 0],[0, 1, 0],[0, 0, 1]])
+            False
+        """
+        if isinstance(other, AlternatingSignMatrix):
+            return self._matrix < other._matrix
+        return False #return False if other is not an ASM
+
+    def __ge__(self, other):
+        """
+        Check greater than or equal to. This is needed, see :trac:`15372`.
+
+        EXAMPLES::
+
+            sage: A = AlternatingSignMatrices(3)
+            sage: M = A([[1, 0, 0],[0, 1, 0],[0, 0, 1]])
+            sage: M >= A([[1, 0, 0],[0, 1, 0],[0, 0, 1]])
+            True
+            sage: M >= A([[1, 0, 0],[0, 0, 1],[0, 1, 0]])
+            True
+        """
+        if isinstance(other, AlternatingSignMatrix):
+            return self._matrix >= other._matrix
+        return False #return False if other is not an ASM
+
+    def __gt__(self, other):
+        """
+        Check greater than. This is needed, see :trac:`15372`.
+
+        EXAMPLES::
+
+            sage: A = AlternatingSignMatrices(3)
+            sage: M = A([[1, 0, 0],[0, 1, 0],[0, 0, 1]])
+            sage: M > A([[1, 0, 0],[0, 1, 0],[0, 0, 1]])
+            False
+        """
+        if isinstance(other, AlternatingSignMatrix):
+            return self._matrix > other._matrix
+        return False #return False if other is not an ASM
+
     def _latex_(self):
         r"""
         Return a `\LaTeX` representation of ``self``.
@@ -169,6 +234,7 @@ class AlternatingSignMatrix(Element):
         """
         return copy.copy(self._matrix)
 
+    @combinatorial_map(name='to monotone triangle')
     def to_monotone_triangle(self):
         r"""
         Return a monotone triangle from ``self``.
