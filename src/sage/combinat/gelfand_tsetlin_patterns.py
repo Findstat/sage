@@ -8,7 +8,7 @@ AUTHORS:
 REFERENCES:
 
 .. [BBF] B. Brubaker, D. Bump, and S. Friedberg.
-   Weyl Group Multiple Dirichlet Series: Type A Combinatorial Theory.
+   Weyl Group Multiple Dirichlet Series: Type `A` Combinatorial Theory.
    Ann. of Math. Stud., vol. 175, Princeton Univ. Press, New Jersey, 2011.
 
 .. [GC50] I. M. Gelfand and M. L. Cetlin.
@@ -971,7 +971,7 @@ class GelfandTsetlinPatternsTopRow(GelfandTsetlinPatterns):
             False
         """
         # Check if the the top row matches (if applicable)
-        if tuple(gt[0]) != self._row:
+        if gt.nrows() > 0 and tuple(gt[0]) != self._row:
             return False
         return GelfandTsetlinPatterns.__contains__(self, gt)
 

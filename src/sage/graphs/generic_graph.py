@@ -16085,9 +16085,7 @@ class GenericGraph(GenericGraph_pyx):
         key = self._keys_for_vertices()
 
         s = '%s {\n' % graph_string
-        if (options['vertex_labels'] and
-            options['labels'] == "latex"): # not a perfect option name
-            # TODO: why do we set this only for latex labels?
+        if (options['vertex_labels']): # not a perfect option name
             s += '  node [shape="plaintext"];\n'
         for v in self.vertex_iterator():
             if not options['vertex_labels']:

@@ -142,8 +142,8 @@ def _init_csage():
     # call its interrupt handler (which is the one we set now). This
     # handler issues a sig_check() which finally raises the
     # KeyboardInterrupt exception.
-    import signal
-    signal.signal(signal.SIGINT, sage_python_check_interrupt)
+#    import signal
+#    signal.signal(signal.SIGINT, sage_python_check_interrupt)
 
     init_csage()
     _signals.raise_exception = sig_raise_exception
