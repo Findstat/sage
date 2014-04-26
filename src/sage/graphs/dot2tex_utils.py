@@ -125,6 +125,3 @@ def quoted_str(x):
     """
     return re.sub("\n",r"\\n\\"+"\n", re.sub("\"|\r|}|{","", str(x)))
 
-        sage: sage.graphs.dot2tex_utils.key("blah{bleh}\nbl.ih{")
-    return re.sub("[\\\'\"\[\]() \t\r\n{}.]","", str(x))
-    Same as :func:`key`, except that the hash of the object is
