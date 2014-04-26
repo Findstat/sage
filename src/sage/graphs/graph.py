@@ -540,8 +540,7 @@ def FindStatGraph(x):
     - ``x[0]`` -- the list of edges
     - ``x[1]`` -- number of vertices
     """
-    G = Graph([range(x[1]), lambda i, j: (i,j) in x[1] or (j,i) in x[0]])
-    G._immutable = True
+    G = Graph([range(x[1]), lambda i, j: (i,j) in x[1] or (j,i) in x[0]], immutable=True)
     return G
 
 class Graph(GenericGraph):
