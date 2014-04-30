@@ -235,6 +235,7 @@ class AlternatingSignMatrix(Element):
         """
         return copy.copy(self._matrix)
 
+    @combinatorial_map(name='to monotone triangle')
     def to_monotone_triangle(self):
         r"""
         Return a monotone triangle from ``self``.
@@ -602,11 +603,6 @@ class AlternatingSignMatrix(Element):
         for k in range(0,len(output)):
             output[k] = M.from_height_function((output[k]-matrix.ones(n,n))/2)         
         return(output)
-
-    @combinatorial_map(name='to Gelfand-Tsetlin pattern')
-    def to_gelfand_tsetlin_pattern(self):
-        from sage.combinat.gelfand_tsetlin_patterns import GelfandTsetlinPattern
-        return GelfandTsetlinPattern(self.to_monotone_triangle())
 
     @combinatorial_map(name='to Dyck word')
     def to_dyck_word(self):
