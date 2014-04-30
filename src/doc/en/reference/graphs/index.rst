@@ -83,12 +83,4 @@ Libraries of algorithms
    sage/graphs/hyperbolicity
    sage/graphs/tutte_polynomial
 
-Utilities
----------
-
-.. toctree::
-   :maxdepth: 1
-
-   sage/graphs/dot2tex_utils
-
 .. include:: ../footer.txt
