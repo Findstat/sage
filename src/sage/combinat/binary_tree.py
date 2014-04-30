@@ -1928,7 +1928,10 @@ class BinaryTree(AbstractClonableTree, ClonableArray):
             [         o     ]
         """
         B = self.parent()._element_constructor_
-        return B([self[0][0], B([self[0][1], self[1]])])
+        if not self[0].is_empty():
+            return B([self[0][0], B([self[0][1], self[1]])])
+        else:
+            return B([self[1], self[0]])
 
     @combinatorial_map(name="Left rotate")
     def left_rotate(self):
@@ -2000,9 +2003,11 @@ class BinaryTree(AbstractClonableTree, ClonableArray):
             True
         """
         B = self.parent()._element_constructor_
-        return B([B([self[0], self[1][0]]), self[1][1]])
+        if not self[1].is_empty():
+            return B([B([self[0], self[1][0]]), self[1][1]])
+        else:
+            return B([self[1], self[0]])
 
-    @combinatorial_map(name="Over operation on Binary Trees")
     def over(self, bt):
         r"""
         Return ``self`` over ``bt``, where "over" is the ``over``
@@ -2110,7 +2115,6 @@ class BinaryTree(AbstractClonableTree, ClonableArray):
 
     __div__ = over
 
-    @combinatorial_map(name="Under operation on Binary Trees")
     def under(self, bt):
         r"""
         Return ``self`` under ``bt``, where "under" is the ``under``
