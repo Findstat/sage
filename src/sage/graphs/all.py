@@ -4,7 +4,7 @@ lazy_import("sage.graphs.graph_generators", "graphs")
 lazy_import("sage.graphs.digraph_generators", "digraphs")
 lazy_import("sage.graphs.hypergraph_generators", "hypergraphs")
 from graph_database import GraphDatabase, GenericGraphQuery, GraphQuery
-from graph import Graph
+from graph import Graph, FindStatGraph
 from digraph import DiGraph
 from hypergraph import Hypergraph
 from bipartite_graph import BipartiteGraph

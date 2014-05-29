@@ -1261,6 +1261,46 @@ class Permutation(CombinatorialObject, Element):
             entries[(p[i]-1,i)] = 1
         return matrix(n, entries, sparse = True)
 
+    @combinatorial_map(name='major-index to inversion-number bijection')
+    def maj_to_inv_bijection(self):
+        r"""
+        Return the permutation whose Lehmer code
+        equals the major code of ``self``.
+
+        This map sends the major index to the number of inversions.
+
+        EXAMPLES::
+
+            sage: Permutation([3,1,4,2]).maj_to_inv_bijection()
+            [3, 4, 1, 2]
+
+        TESTS::
+
+            all( pi.major_index() == pi.maj_to_inv_bijection().number_of_inversions() for n in [1..5] for pi in Permutations(n) )
+            True
+        """
+        return from_lehmer_code(self.to_major_code())
+
+    @combinatorial_map(name='inversion-number to major-index bijection')
+    def inv_to_maj_bijection(self):
+        r"""
+        Return the permutation whose major code
+        equals the Lehmer code of ``self``.
+
+        This map sends the number of inversions to the major index.
+
+        EXAMPLES::
+
+            sage: Permutation([3,4,1,2]).inv_to_maj_bijection()
+            [3, 1, 4, 2]
+
+        TESTS::
+
+            all( pi == pi.maj_to_inv_bijection().inv_to_maj_bijection() for n in [1..5] for pi in Permutations(n) )
+            True
+        """
+        return from_major_code(self.to_lehmer_code())
+
     @combinatorial_map(name='to alternating sign matrix')
     def to_alternating_sign_matrix(self):
         r"""

@@ -533,6 +533,18 @@ from sage.graphs.generic_graph import GenericGraph
 from sage.graphs.digraph import DiGraph
 from sage.combinat.combinatorial_map import combinatorial_map
 
+def FindStatGraph(x):
+    """
+    Construct an immutable graph.
+
+    INPUT:
+
+    - ``x[0]`` -- the list of edges
+    - ``x[1]`` -- number of vertices
+    """
+    G = Graph([range(x[1]), lambda i, j: (i,j) in x[1] or (j,i) in x[0]], immutable=True)
+    return G
+
 class Graph(GenericGraph):
     r"""
     Undirected graph.

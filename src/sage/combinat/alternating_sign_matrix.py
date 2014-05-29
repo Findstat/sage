@@ -604,6 +604,11 @@ class AlternatingSignMatrix(Element):
             output[k] = M.from_height_function((output[k]-matrix.ones(n,n))/2)         
         return(output)
 
+    @combinatorial_map(name='to Gelfand-Tsetlin pattern')
+    def to_gelfand_tsetlin_pattern(self):
+        from sage.combinat.gelfand_tsetlin_patterns import GelfandTsetlinPattern
+        return GelfandTsetlinPattern(self.to_monotone_triangle())
+
     @combinatorial_map(name='to Dyck word')
     def to_dyck_word(self):
         r"""
