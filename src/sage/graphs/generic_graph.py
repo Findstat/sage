@@ -17950,7 +17950,6 @@ class GenericGraph(GenericGraph_pyx):
             (Graph on 5 vertices, {0: 4, 1: 3, 2: 0, 3: 1, 4: 2})
         """
         from sage.groups.perm_gps.partn_ref.refinement_graphs import search_tree
-        from copy import copy
 
         dig = (self.has_loops() or self._directed)
         if partition is None:
@@ -17972,7 +17971,7 @@ class GenericGraph(GenericGraph_pyx):
             partition = [[G_to[v] for v in cell] for cell in partition]
             a,b,c = search_tree(GC, partition, certify=True, dig=dig, verbosity=verbosity)
             # c is a permutation to the canonical label of G, which depends only on isomorphism class of self.
-            H = copy(self)
+            H = self.copy(immutable=False)
             c_new = {}
             for v in self.vertices():
                 c_new[v] = c[G_to[relabeling[v]]]
@@ -17995,7 +17994,7 @@ class GenericGraph(GenericGraph_pyx):
         GC = HB._cg
         partition = [[G_to[v] for v in cell] for cell in partition]
         a,b,c = search_tree(GC, partition, certify=True, dig=dig, verbosity=verbosity)
-        H = copy(self)
+        H = self.copy(immutable=False)
         c_new = {}
         for v in G_to:
             c_new[v] = c[G_to[v]]
