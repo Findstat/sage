@@ -197,8 +197,8 @@ def combinatorial_map_wrapper(f=None, order=None, name=None):
 ##############################################################################
 # Edit here to customize the combinatorial_map hook
 ##############################################################################
-combinatorial_map = combinatorial_map_trivial
-#combinatorial_map = combinatorial_map_wrapper
+#combinatorial_map = combinatorial_map_trivial
+combinatorial_map = combinatorial_map_wrapper
 
 class CombinatorialMap(object):
     r"""
