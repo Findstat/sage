@@ -1,25 +1,8 @@
 r"""
-Utility functions for the interface with dot2tex
-
-TESTS:
-
-We check that dot2tex supports neato, and in particular floats as
-positions. See `<http://code.google.com/p/dot2tex/issues/detail?id=20>`_::
-
-    sage: graph = 'digraph {\n  "11,1" [label="(\'11\', 1)"];\n  "10,2" [label="(\'10\', 2)"];\n  "01,2" [label="(\'01\', 2)"];\n  "11,0" [label="(\'11\', 0)"];\n  "01,0" [label="(\'01\', 0)"];\n  "01,1" [label="(\'01\', 1)"];\n  "00,1" [label="(\'00\', 1)"];\n  "10,1" [label="(\'10\', 1)"];\n  "00,0" [label="(\'00\', 0)"];\n  "00,2" [label="(\'00\', 2)"];\n  "10,0" [label="(\'10\', 0)"];\n  "11,2" [label="(\'11\', 2)"];\n\nedge [color="black"];\n  "11,1" -> "10,2";\n  "11,1" -> "11,2";\n  "11,0" -> "11,1";\n "11,0" -> "01,1";\n  "01,0" -> "11,1";\n  "01,0" -> "01,1";\n  "01,1" -> "01,2";\n  "01,1" -> "00,2";\n  "00,1" -> "01,2";\n  "00,1" -> "00,2";\n  "10,1" -> "10,2";\n  "10,1" -> "11,2";\n  "00,0" -> "00,1";\n  "00,0" -> "10,1";\n  "10,0" -> "00,1";\n  "10,0" -> "10,1";\n}'
-    sage: import dot2tex                                                    # optional - dot2tex graphviz
-    sage: output = dot2tex.dot2tex(graph, format="positions", prog="neato") # optional - dot2tex graphviz
-    sage: sorted(output.keys())                                             # optional - dot2tex graphviz
-    ['00,0', '00,1', '00,2',
-     '01,0', '01,1', '01,2',
-     '10,0', '10,1', '10,2',
-     '11,0', '11,1', '11,2']
-    sage: assert isinstance(output, dict)                                   # optional - dot2tex graphviz
-    sage: assert all(isinstance(position, list) for position in output.values()) # optional - dot2tex graphviz
-    sage: assert all(isinstance(c, float) for position in output.values() for c in position ) # optional - dot2tex graphviz
+This file contains some utility functions for the interface with dot2tex
 """
 #*****************************************************************************
-#      Copyright (C) 2010-2013   Nicolas M. Thiery <nicolas.thiery at u-psud.fr>
+#      Copyright (C) 2010   Nicolas M. Thiery <nicolas.thiery at u-psud.fr>
 #
 #  Distributed under the terms of the GNU General Public License (GPL)
 #                  http://www.gnu.org/licenses/
@@ -30,7 +13,8 @@ from sage.misc.latex import latex
 
 def have_dot2tex():
     """
-    Return whether ``dot2tex`` >= 2.8.7 and graphviz are installed and functional.
+    Returns whether ``dot2tex`` >= 2.8.7 and graphviz are installed
+    and functional
 
     EXAMPLES::
 
@@ -49,8 +33,8 @@ def have_dot2tex():
 
 def assert_have_dot2tex():
     """
-    Test whether ``dot2tex`` >= 2.8.7 and graphviz are installed and
-    functional, and raise an error otherwise.
+    Tests whether ``dot2tex`` >= 2.8.7 and graphviz are installed and
+    functional, and raises an error otherwise
 
     EXAMPLES::
 
@@ -60,7 +44,7 @@ def assert_have_dot2tex():
 An error occurs while testing the dot2tex installation.
 
 Please see :meth:`sage.graphs.generic_graph.GenericGraph.layout_graphviz`
-and check the installation of graphviz and of the dot2tex spkg.
+and check the installation of graphviz and the dot2tex spkg.
 
 For support, please contact <sage-combinat-devel at googlegroups.com>.
 """
@@ -78,41 +62,22 @@ for installation instructions.
         raise RuntimeError(missing_error_string)
 
 def quoted_latex(x):
-    r"""
-    Strip the latex representation of ``x`` to make it suitable for ``dot2tex``.
-
-    This strips out newlines, comments, and ``"`` quotes. It also
-    replaces ``\verb`` macros by ``\text`` (dot2tex currently does not
-    support ``\verb``). The special caracters ``{}_^`` inside
-    ``\verb`` are replaced by spaces.
+    """
+    Strips the latex representation of ``x`` to make it suitable for a
+    ``dot2tex`` string.
 
     EXAMPLES::
 
-        sage: print sage.graphs.dot2tex_utils.quoted_latex(matrix([[1,1],[0,1],[0,0]]))
-        \left(\begin{array}{rr}1 & 1 \\0 & 1 \\0 & 0\end{array}\right)
-        sage: print sage.graphs.dot2tex_utils.quoted_latex("coucou")
-        \text{coucou}
-        sage: print sage.graphs.dot2tex_utils.quoted_latex("coucou coucou")
-        \text{coucou}\phantom{\text{x}}\text{coucou}
-        sage: print sage.graphs.dot2tex_utils.quoted_latex("coucou_coucou{bla^3{}")
-        \text{coucou coucou bla 3  }
-        sage: print sage.graphs.dot2tex_utils.quoted_latex("1 0 0\n  1 0\n    1")
-        \begin{array}{l}\text{1}\phantom{\text{x}}\text{0}\phantom{\text{x}}\text{0}\\\phantom{\text{xx}}\text{1}\phantom{\text{x}}\text{0}\\\phantom{\text{xxxx}}\text{1}\end{array}
+        sage: sage.graphs.dot2tex_utils.quoted_latex(matrix([[1,1],[0,1],[0,0]]))
+        '\\left(\\begin{array}{rr}1 & 1 \\\\0 & 1 \\\\0 & 0\\end{array}\\right)'
     """
-    result = latex(x)
-    def text(matchobj):
-        s = matchobj.group(2)
-        return r"\text{%s}"%(re.sub(r"[_^{}]", " ", s))
-    result = re.sub(r"\\verb(.)(.*?)\1", text, result)
-    result = re.sub("\"|\r|(%[^\n]*)?\n","", result)
-    return result
+    return re.sub("\"|\r|(%[^\n]*)?\n","", latex(x))
 
 def quoted_str(x):
-    r"""
-    Strip the string representation of ``x`` to make it suitable for ``dot2tex``.
-
-    This is especially used for node labels (``dot2tex`` gets confused
-    by newlines and braces).
+    """
+    Strips the string representation of ``x`` to make it suitable for
+    a ``dot2tex`` string, and especially a node label (``dot2tex``
+    gets confused by newlines, and braces)
 
     EXAMPLES::
 
