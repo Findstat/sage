@@ -1463,7 +1463,7 @@ class Graph(GenericGraph):
 
             if not loops and any(u in neighb for u,neighb in data.iteritems()):
                 if loops is False:
-                    u = (u for u,neighb in data.iteritems() if u in neighb).next()
+                    u = next(u for u,neighb in data.iteritems() if u in neighb)
                     raise ValueError("The graph was built with loops=False but input data has a loop at {}.".format(u))
                 loops = True
             if loops is None:
@@ -1497,7 +1497,7 @@ class Graph(GenericGraph):
                         if loops is None:
                             loops = True
                         elif loops is False:
-                            u = (u for u,neighb in data.iteritems() if u in neighb).next()
+                            u = next(u for u,neighb in data.iteritems() if u in neighb)
                             raise ValueError("The graph was built with loops=False but input data has a loop at {}.".format(u))
                         break
                 if loops is None:
@@ -1506,7 +1506,7 @@ class Graph(GenericGraph):
             for u in data:
                 if len(set(data[u])) != len(data[u]):
                     if multiedges is False:
-                        v = (v for v in data[u] if data[u].count(v) > 1).next()
+                        v = next((v for v in data[u] if data[u].count(v) > 1))
                         raise ValueError("Non-multigraph got several edges (%s,%s)"%(u,v))
                     if multiedges is None:
                         multiedges = True
@@ -1675,7 +1675,7 @@ class Graph(GenericGraph):
         elif format == 'elliptic_curve_congruence':
             from sage.rings.arith import lcm, prime_divisors
             from sage.rings.fast_arith import prime_range
-            from sage.misc.misc import prod
+            from sage.misc.all import prod
             for i in xrange(self.order()):
                 for j in xrange(i):
                     E = curves[i]
@@ -2055,7 +2055,7 @@ class Graph(GenericGraph):
             # graph. We *know* it exists as there are too many edges around.
             n = self.order()
             seen = {}
-            u = self.vertex_iterator().next()
+            u = next(self.vertex_iterator())
             seen[u] = u
             stack = [(u, v) for v in self.neighbor_iterator(u)]
             while stack:
@@ -3105,7 +3105,7 @@ class Graph(GenericGraph):
             return True
 
         A = self.automorphism_group()
-        e = self.edge_iterator(labels=False).next()
+        e = next(self.edge_iterator(labels=False))
         e = [A._domain_to_gap[e[0]], A._domain_to_gap[e[1]]]
 
         return gap("OrbitLength("+str(A._gap_())+",Set(" + str(e) + "),OnSets);") == self.size()
@@ -3147,7 +3147,7 @@ class Graph(GenericGraph):
             return True
 
         A = self.automorphism_group()
-        e = self.edge_iterator(labels=False).next()
+        e = next(self.edge_iterator(labels=False))
         e = [A._domain_to_gap[e[0]], A._domain_to_gap[e[1]]]
 
         return gap("OrbitLength("+str(A._gap_())+",Set(" + str(e) + "),OnTuples);") == 2*self.size()
@@ -3397,7 +3397,7 @@ class Graph(GenericGraph):
         # in which it has been used. All the other edges are oriented
         # backward
 
-        v = self.vertex_iterator().next()
+        v = next(self.vertex_iterator())
         seen = {}
         i=1
 
@@ -3405,17 +3405,17 @@ class Graph(GenericGraph):
         seen[v] = i
 
         # indicates the stack of edges to explore
-        next = self.edges_incident(v)
+        next_ = self.edges_incident(v)
 
-        while next:
-            e = next.pop(-1)
+        while next_:
+            e = next_.pop(-1)
             # We assume e[0] to be a `seen` vertex
             e = e if seen.get(e[0],False) != False else (e[1],e[0],e[2])
 
             # If we discovered a new vertex
             if seen.get(e[1],False) == False:
                 d.add_edge(e)
-                next.extend([ee for ee in self.edges_incident(e[1]) if (((e[0],e[1]) != (ee[0],ee[1])) and ((e[0],e[1]) != (ee[1],ee[0])))])
+                next_.extend([ee for ee in self.edges_incident(e[1]) if (((e[0],e[1]) != (ee[0],ee[1])) and ((e[0],e[1]) != (ee[1],ee[0])))])
                 i+=1
                 seen[e[1]]=i
 
@@ -6617,7 +6617,7 @@ class Graph(GenericGraph):
         g = g1_tree.union(g2_tree)
 
         # An edge to connect them, with the appropriate label
-        g.add_edge(g1_tree.vertex_iterator().next(), g2_tree.vertex_iterator().next(), flow)
+        g.add_edge(next(g1_tree.vertex_iterator()), next(g2_tree.vertex_iterator()), flow)
 
         if pos:
             g.set_pos(pos)

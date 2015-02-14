@@ -235,6 +235,7 @@ class AlternatingSignMatrix(Element):
         """
         return copy.copy(self._matrix)
 
+    @combinatorial_map(name='to monotone triangle')
     def to_monotone_triangle(self):
         r"""
         Return a monotone triangle from ``self``.
