@@ -18890,9 +18890,7 @@ class GenericGraph(GenericGraph_pyx):
             if options['rankdir'] not in directions:
                 raise ValueError("rankdir should be one of %s"%directions.keys())
             s += '  rankdir=%s\n'%(directions[options['rankdir']])
-        if (options['vertex_labels'] and
-            options['labels'] == "latex"): # not a perfect option name
-            # TODO: why do we set this only for latex labels?
+        if (options['vertex_labels']): # not a perfect option name
             s += '  node [shape="plaintext"];\n'
         for v in self.vertex_iterator():
             if not options['vertex_labels']:
